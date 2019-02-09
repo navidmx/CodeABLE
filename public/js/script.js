@@ -35,3 +35,11 @@ function commandEntered(e) {
         return false;
     }
 }
+
+function pythonSuccess() {
+    $("#output").css("color", "white")
+}
+
+function pythonError() {
+    $("#output").css("color", "red")
+}
