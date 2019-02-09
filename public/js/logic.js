@@ -1,8 +1,12 @@
 var editor = ace.edit("editor");
-var session = editor.getSession();
-var aceDoc = session.getDocument();
 
-var checkpointNames = [];
+editor.setTheme("ace/theme/twilight");
+editor.session.setMode("ace/mode/python");
+
+let session = editor.getSession();
+let aceDoc = session.getDocument();
+
+let checkpointNames = [];
 
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
@@ -19,40 +23,35 @@ function runCommand(command) {
     command.trim();
     command.toLowerCase();
 
-    if(command.includes("go to")) {
-        voiceGoTo(command);
+    if(command.includes("run"))
+    {
+        runit();
+    }
+    else if(command.includes("go to")) {
+        commandGoTo(command);
     }
     else if(command.includes("read")) {
-        voiceRead(command);
+        commandRead(command);
     }
     else if(command.includes("new")) {
-        voiceMakeNew(command);
+        commandMakeNew(command);
     }
 }
 
 //figures out where to go, given the string command
-function voiceGoTo(command) {
+function commandGoTo(command) {
     if(command.includes("line")) {
 
-        let index = 0;
+        let lineNum = getLineFromCommand(command);
 
-        if(command.length > command.indexOf("line") + 4) {
-            index = command.indexOf("line") + 5;
+        if(lineNum >= 0) {
+
+            if(command.includes("end")) {
+                goToLine(lineNum, 1);
+            }
+
+            goToLine(lineNum, 0);
         }
-
-        let lineNum = parseInt(command.substring(index, command.length));
-
-        let lastLine = editor.session.getLength();
-
-        if(lineNum > lastLine) {
-            //TODO: say "line __ does not exist. Last line is __."
-        }
-
-        if(command.includes("end")) {
-            goToLine(lineNum, 1);
-        }
-
-        goToLine(lineNum, 0);
     }
     else if(command.includes("loop") || command.includes("checkpoint")) {
         goToCheckpoint(command);
@@ -82,6 +81,26 @@ function goToCheckpoint(command) {
 }
 
 
+function getLineFromCommand(command) {
+    let index = 0;
+
+    if(command.length > command.indexOf("line") + 4) {
+        index = command.indexOf("line") + 5;
+    }
+
+    let lineNum = parseInt(command.substring(index, command.length));
+
+    let lastLine = editor.session.getLength();
+
+    if(lineNum > lastLine) {
+        //TODO: say "line __ does not exist. Last line is __."
+        return -1;
+    }
+
+    return lineNum;
+}
+
+
 function goToObject(command) {
     if(command.includes("loop")) {
 
@@ -106,7 +125,7 @@ function goToObject(command) {
 }
 
 
-function voiceRead(command) {
+function commandRead(command) {
     if(command.includes("line")) {
         //TODO
     }
