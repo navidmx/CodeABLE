@@ -173,7 +173,7 @@ function goToObject(command) {
         for (let name of checkpointNames) {
             if(command.includes(name)) {
                 giveFeedback("Going to checkpoint " + name);
-                
+                goToCheckpoint("checkpoint", name);
             }
         }
     }
