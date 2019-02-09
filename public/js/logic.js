@@ -38,6 +38,27 @@ function checkError(error) {
     return error;
 }
 
+//adds checkpoints in a loaded file into the system
+function loadCheckpoints() {
+    let allLines = [];
+    allLines = aceDoc.getAllLines().slice();
+    let symbol = " ~ ";
+
+    for (let line of allLines) {
+        if (line.includes("# " + symbol)) {
+            lineSplit = line.split(" ");
+
+            for (let i in lineSplit) {
+                if (lineSplit[i].includes("~")) {
+                    nameIndex = i + 2;
+
+                    checkpointNames.splice(0, 0, lineSplit[nameIndex]);
+                }
+            }
+        }
+    }
+}
+
 function runCommand(command) {
     if (command.includes("run")) {
         runit();
@@ -152,7 +173,7 @@ function goToObject(command) {
         for (let name of checkpointNames) {
             if(command.includes(name)) {
                 giveFeedback("Going to checkpoint " + name);
-                goToCheckpoint("checkpoint", name);
+                
             }
         }
     }
@@ -202,6 +223,7 @@ function goToCheckpoint(type, name) {
     allLines = aceDoc.getAllLines().slice();
     let symbol = " ~ ";
     let comment = "#" + symbol + type + ": \"" + name + "\"";
+    
 
     for (let i = 0; i < allLines.length; i++) {
         if (allLines[i].includes(comment)) {
