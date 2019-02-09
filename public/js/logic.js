@@ -35,19 +35,9 @@ function runCommand(command) {
 function voiceGoTo(command) {
     if(command.includes("line")) {
 
-        let index = 0;
+        lineNum = getLineFromCommand(command);
 
-        if(command.length > command.indexOf("line") + 4) {
-            index = command.indexOf("line") + 5;
-        }
-
-        let lineNum = parseInt(command.substring(index, command.length));
-
-        let lastLine = editor.session.getLength();
-
-        if(lineNum > lastLine) {
-            //TODO: say "line __ does not exist. Last line is __."
-        }
+        if(lineNum >= 0)
 
         if(command.includes("end")) {
             goToLine(lineNum, 1);
@@ -108,9 +98,34 @@ function goToObject(command) {
 
 
 function voiceRead(command) {
+
+    //TODO: this is ambiguous, user could say "read lines 5 to 7" and it would
+    //just read line 5
     if(command.includes("line")) {
-        //TODO
+        
+        let lineNum = getLineFromCommand(command);
+
     }
+}
+
+
+function getLineFromCommand(command) {
+    let index = 0;
+
+    if(command.length > command.indexOf("line") + 4) {
+        index = command.indexOf("line") + 5;
+    }
+
+    let lineNum = parseInt(command.substring(index, command.length));
+
+    let lastLine = editor.session.getLength();
+
+    if(lineNum > lastLine) {
+        //TODO: say "line __ does not exist. Last line is __."
+        return -1;
+    }
+
+    return lineNum;
 }
 
 
