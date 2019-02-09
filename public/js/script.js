@@ -1,6 +1,8 @@
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/python");
+var session = editor.getSession();
+var document = session.getDocument();
 
 $(".run-program").click(function () {
     console.log("Test")
@@ -22,6 +24,8 @@ function startVoice() {
 }*/
 
 var checkpointNames = [];
+editor.insert("hello\nmy\nname\nis\njason\nhi");
+console.log(read(1, 5, 2, 4));
 
 editor.insert("hello\nmy\nname\nis\njason\nhi\nbruh for \nhi");
 
@@ -118,6 +122,5 @@ function goToObject(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    const editor = this.ace.editor;
-    return editor.env.document.getTextRange(new Range(from_line, from_col, to_line, to_col));
+    return document;
 }
