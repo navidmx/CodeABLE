@@ -1,10 +1,13 @@
-var checkpointNames = [];
 var editor = ace.edit("editor");
+
+var checkpointNames = [];
+var session = editor.getSession();
+var aceDoc = session.getDocument();
+
 
 editor.insert("hello\nmy\nname\nis\njason\nhi");
 console.log(read(1, 5, 2, 4));
-var session = editor.getSession();
-var aceDoc = session.getDocument();
+
 
 runCommand("go to next for loop");
 

@@ -27,9 +27,6 @@ function startVoice() {
 }
 
 
-function read(from_line, from_col, to_line, to_col)
-{
-    return aceDoc;
 function endVoice() {
     
 }
