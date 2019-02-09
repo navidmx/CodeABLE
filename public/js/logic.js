@@ -23,9 +23,6 @@ function giveFeedback(text) {
 
 
 function runCommand(command) {
-    command.trim();
-    command.toLowerCase();
-
     if(command.includes("run"))
     {
         runit();
