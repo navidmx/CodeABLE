@@ -6,7 +6,7 @@ var aceDoc = session.getDocument();
 
 
 editor.insert("hello\nmy\nname\nis\njason\nhi");
-console.log(read(1, 5, 2, 4));
+console.log(read(1, 1, 3, 1));
 
 
 runCommand("go to next for loop");
@@ -105,5 +105,5 @@ function goToObject(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    return aceDoc.getTextRange(from_line, from_col, to_line, to_col);
+    return aceDoc.getTextRange(new Range(from_line, from_col, to_line, to_col));
 }
