@@ -87,11 +87,6 @@ function goToLine(lineNum, loc) {
 }
 
 
-function goToCheckpoint(command) {
-    //TODO
-}
-
-
 function getLineFromCommand(command) {
     let index = 0;
 
