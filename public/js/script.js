@@ -17,7 +17,7 @@ $(document).keydown(function (e) {
 function commandEntered(e) {
     if (e.keyCode == 13) {
         $(".form-control").blur();
-        $(".ace_content").focus();
+        editor.focus();
         runCommand($("#scriptBox").val());
         $("#scriptBox")
             .css("color", "#2e9dc6")
