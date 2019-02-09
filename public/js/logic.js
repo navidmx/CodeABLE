@@ -111,7 +111,10 @@ function getLineFromCommand(command) {
 }
 
 function getLineLength(lineNum) {
-    //TODO
+    goToLine(lineNum + 1);
+    editor.navigateLeft(1);
+
+    return editor.getCursorPosition() + 1;
 }
 
 
@@ -139,7 +142,6 @@ function goToObject(command) {
         for (let name of checkpointNames) {
             if(command.includes(name)) {
                 giveFeedback("Going to checkpoint " + name);
-                editor.insert(" Going to checkpoint " + name + "...");
                 goToCheckpoint("checkpoint", name);
             }
         }
@@ -148,8 +150,13 @@ function goToObject(command) {
 
 function commandRead(command) {
     if (command.includes("this line") || command.includes("current line")) {
-        let line = editor.getCursorPosition().row + 1;
+        let row = editor.getCursorPosition().row;
+        let col = getLineLength(row + 1) - 1;
 
+        read(new Range(row + 1, 0, row + 1, col));
+
+    } else if (command.includes("this block")) {
+        //TODO: scan through, figure out where paragraph ends
     }
 }
 
@@ -166,6 +173,7 @@ function commandMake(command) {
 }
 
 function read(read_range) {
+    editor.insert(aceDoc.getTextRange(read_range));
     return aceDoc.getTextRange(read_range);
 }
 
@@ -187,9 +195,10 @@ function goToCheckpoint(type, name) {
 
     for (let i = 0; i < allLines.length; i++) {
         if (allLines[i].includes(comment)) {
-            goToLine(i + 2);
+            goToLine(i + 2, 0);
             giveFeedback("Now at " + type + " " + name);
+            return;
         }
     }
-    giveFeedback("That " + type + " does not exist")
+    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist")
 }
