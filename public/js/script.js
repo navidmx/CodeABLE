@@ -16,7 +16,10 @@ $(document).keydown(function (e) {
 
 function commandEntered(e) {
     if (e.keyCode == 13) {
+        $(".form-control").blur();
+        $(".ace_content").focus();
         runCommand($("#scriptBox").val());
+        $("#scriptBox").val("");
         return false;
     }
 }
