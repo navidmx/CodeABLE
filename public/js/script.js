@@ -2,7 +2,7 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/python");
 var session = editor.getSession();
-var document = session.getDocument();
+var aceDoc = session.getDocument();
 
 $(".run-program").click(function () {
     runit();
@@ -30,6 +30,7 @@ function commandEntered(e) {
 function startVoice() {
     // Start Azure's voice detection, enter in runCommand(voice)
 }
+
 
 function endVoice() {
     // Halt voice input

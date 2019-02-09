@@ -1,12 +1,17 @@
+var editor = ace.edit("editor");
+
 var checkpointNames = [];
+var session = editor.getSession();
+var aceDoc = session.getDocument();
+
+
 editor.insert("hello\nmy\nname\nis\njason\nhi");
 console.log(read(1, 5, 2, 4));
 
-editor.insert("hello\nmy\nname\nis\njason\nhi\nbruh for \nhi");
 
-interpretVoice("go to next for loop");
+runCommand("go to next for loop");
 
-function interpretVoice(command) {
+function runCommand(command) {
 
     command.trim();
     command.toLowerCase();
@@ -91,11 +96,14 @@ function goToObject(command) {
 
             editor.insert(line.toString() + "\n" + col.toString());
         }
+        else if(command.includes("while")) {
+            let line = edit
+        }
     }
 }
 
 
 function read(from_line, from_col, to_line, to_col)
 {
-    return document;
+    return aceDoc.getTextRange(from_line, from_col, to_line, to_col);
 }
