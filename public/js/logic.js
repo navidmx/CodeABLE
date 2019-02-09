@@ -5,7 +5,7 @@ var aceDoc = session.getDocument();
 var checkpointNames = [];
 
 for(let i = 0; i < 20; i++)
-    editor.insert("test " + i + "\n");
+    editor.insert("test " + (i + 1) + "\n");
 
 editor.insert(" for ");
 
