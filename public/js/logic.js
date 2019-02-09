@@ -1,14 +1,17 @@
-var checkpointNames = [];
 var editor = ace.edit("editor");
 
-editor.insert("hello\nmy\nname\nis\njason\nhi");
-console.log(read(1, 5, 2, 4));
+var checkpointNames = [];
 var session = editor.getSession();
 var aceDoc = session.getDocument();
 
-interpretVoice("go to next for loop");
 
-function interpretVoice(command) {
+editor.insert("hello\nmy\nname\nis\njason\nhi");
+console.log(read(1, 5, 2, 4));
+
+
+runCommand("go to next for loop");
+
+function runCommand(command) {
 
     command.trim();
     command.toLowerCase();
