@@ -134,6 +134,10 @@ function commandRead(command) {
 
 function read(read_range)
 {
-    console.log(read_range)
     return aceDoc.getTextRange(read_range);
+}
+
+function makeCheckpoint(type, name, line) {
+    goToLine(line, 1);
+    
 }
