@@ -45,12 +45,15 @@ function loadCheckpoints() {
     let symbol = " ~ ";
 
     for (let line of allLines) {
-        if (line.includes("# " + symbol)) {
+        if (line.includes("#" + symbol)) {
             lineSplit = line.split(" ");
 
             for (let i in lineSplit) {
                 if (lineSplit[i].includes("~")) {
                     nameIndex = i + 2;
+
+                    name = lineSplit[nameIndex];
+                    name = name.substring(1, name.length - 1);
 
                     checkpointNames.splice(0, 0, lineSplit[nameIndex]);
                 }
@@ -60,6 +63,11 @@ function loadCheckpoints() {
 }
 
 function runCommand(command) {
+
+    for(let i of checkpointNames) {
+        editor.insert(i);
+    }
+
     if (command.includes("run")) {
         runit();
     } else if (command.includes("go to")) {
@@ -173,7 +181,7 @@ function goToObject(command) {
         for (let name of checkpointNames) {
             if(command.includes(name)) {
                 giveFeedback("Going to checkpoint " + name);
-                
+                goToCheckpoint("checkpoint", name);
             }
         }
     }
