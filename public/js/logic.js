@@ -109,5 +109,5 @@ function goToObject(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    return document;
+    return aceDoc.getTextRange(from_line, from_col, to_line, to_col);
 }
