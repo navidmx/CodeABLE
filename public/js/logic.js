@@ -152,5 +152,17 @@ function makeCheckpoint(type, name, line) {
 }
 
 function goToCheckpoint(type, name) {
+    let allLines = [];
+    allLines = aceDoc.getAllLines().slice();
+    let symbol = " ~ ";
+    let comment = "#" + symbol + type + ": \"" + name + "\"";
 
+    for(let i = 0; i < allLines.length; i++){
+        if(allLines[i].includes(comment))
+        {
+            goToLine(i + 2);
+            giveFeedback("Now at " + type + " " + name);
+        }
+    }
+    giveFeedback("That " + type + " does not exist")
 }
