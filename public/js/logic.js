@@ -10,9 +10,6 @@ for(let i = 0; i < 20; i++)
 editor.insert(" for ");
 
 
-console.log(read(1, 1, 4, 1));
-
-
 runCommand("go to next for loop");
 
 function runCommand(command) {
@@ -116,5 +113,6 @@ function voiceRead(command) {
 
 function read(read_range)
 {
+    console.log(read_range)
     return aceDoc.getTextRange(read_range);
 }
