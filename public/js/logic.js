@@ -232,5 +232,5 @@ function goToCheckpoint(type, name) {
             return;
         }
     }
-    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist")
+    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist");
 }
