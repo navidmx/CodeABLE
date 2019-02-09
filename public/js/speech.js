@@ -14,9 +14,6 @@ var doVoice = 1;
 document.addEventListener('DOMContentLoaded', function() {
     subscriptionKey = 'a23b0fdd276340c293953660d299c231';
     serviceRegion = 'eastus2';
-    phraseDiv = document.getElementById('output');
-
-    phraseDiv.innerHTML = '';
 
     // if we got an authorization token, use the token. Otherwise use the provided subscription key
 
@@ -43,12 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 );
                 recognizer.recognizeOnceAsync(
                     function(result) {
-                        phraseDiv.innerHTML += result.text;
-                        console.log(result);
                         recognizer.close();
                         recognizer = undefined;
                         if (doVoice) {
-                            runCommand(result.text);
+                            commandDisplay(result.text);
                         } else {
                             doVoice = 0;
                         }
