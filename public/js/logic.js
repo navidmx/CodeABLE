@@ -16,26 +16,24 @@ editor.insert(" for ");
 //console.log(read(1, 5, 2, 4));
 
 
-runCommand("go to next for loop");
-
 function runCommand(command) {
 
     command.trim();
     command.toLowerCase();
 
     if(command.includes("go to")) {
-        voiceGoTo(command);
+        commandGoTo(command);
     }
     else if(command.includes("read")) {
-        voiceRead(command);
+        commandRead(command);
     }
     else if(command.includes("new")) {
-        voiceMakeNew(command);
+        commandMakeNew(command);
     }
 }
 
 //figures out where to go, given the string command
-function voiceGoTo(command) {
+function commandGoTo(command) {
     if(command.includes("line")) {
 
         lineNum = getLineFromCommand(command);
@@ -100,7 +98,7 @@ function goToObject(command) {
 }
 
 
-function voiceRead(command) {
+function commandRead(command) {
 
     //TODO: this is ambiguous, user could say "read lines 5 to 7" and it would
     //just read line 5
