@@ -132,16 +132,15 @@ function commandRead(command) {
 }
 
 
-function read(read_range)
-{
+function read(read_range){
     return aceDoc.getTextRange(read_range);
 }
 
 function makeCheckpoint(type, name, line) {
     goToLine(line, 1);
     let cursorPosition = editor.getCursorPosition();
-    let symbol
-
-    let comment  
-    session.insert(cursorPosition,"#fff");
+    let symbol = " ~ ";
+    let comment = "#" + symbol + type + ": \"" + name + "\""; 
+    
+    session.insert(cursorPosition, comment);
 }
