@@ -22,7 +22,7 @@ $(document).keydown(function (e) {
 
 function commandEntered(e) {
     if (e.keyCode == 13) {
-        console.log($("#scriptBox").val());
+        runCommand($("#scriptBox").val());
         return false;
     }
 }
