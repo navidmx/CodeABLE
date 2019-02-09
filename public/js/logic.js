@@ -1,8 +1,8 @@
-var editor = ace.edit("editor");
-var session = editor.getSession();
-var aceDoc = session.getDocument();
+let editor = ace.edit("editor");
+let session = editor.getSession();
+let aceDoc = session.getDocument();
 
-var checkpointNames = [];
+let checkpointNames = [];
 
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
