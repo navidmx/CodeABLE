@@ -7,6 +7,8 @@ Commands:
 
 
 "Read this/current line"
+"Read line __"
+"Read this block"
 
 "Make new checkpoint <name>"
 
