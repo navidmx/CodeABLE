@@ -7,6 +7,9 @@ var subscriptionKey, serviceRegion;
 var authorizationToken;
 var SpeechSDK;
 var recognizer;
+var speechConfig;
+
+var doVoice = 1;
 
 document.addEventListener('DOMContentLoaded', function() {
     subscriptionKey = 'a23b0fdd276340c293953660d299c231';
@@ -16,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     phraseDiv.innerHTML = '';
 
     // if we got an authorization token, use the token. Otherwise use the provided subscription key
-    var speechConfig;
+
     speechConfig = SpeechSDK.SpeechConfig.fromSubscription(
         subscriptionKey,
         serviceRegion
@@ -32,21 +35,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 speechConfig,
                 audioConfig
             );
-            recognizer.recognizeOnceAsync(
-                function(result) {
-                    phraseDiv.innerHTML += result.text;
-                    console.log(result);
-
-                    recognizer.close();
-                    recognizer = undefined;
-                },
-                function(err) {
-                    phraseDiv.innerHTML += err;
-                    console.log(err);
-
-                    recognizer.close();
-                    recognizer = undefined;
-                }
-            );
+            window.startVoice = function() {
+                var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+                recognizer = new SpeechSDK.SpeechRecognizer(
+                    speechConfig,
+                    audioConfig
+                );
+                recognizer.recognizeOnceAsync(
+                    function(result) {
+                        phraseDiv.innerHTML += result.text;
+                        console.log(result);
+                        recognizer.close();
+                        recognizer = undefined;
+                        if (doVoice) {
+                            runCommand(result.text);
+                        } else {
+                            doVoice = 0;
+                        }
+                    },
+                    function(err) {
+                        phraseDiv.innerHTML += err;
+                        console.log(err);
+                        recognizer.close();
+                        recognizer = undefined;
+                    }
+                );
+                return true;
+            };
         });
 });
+
+function endVoice() {
+    doVoice = 0;
+}
