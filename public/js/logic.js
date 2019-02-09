@@ -11,12 +11,10 @@ let checkpointNames = [];
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
 
-
 editor.gotoLine(10);
 editor.insert("for i in range(5)\n");
 editor.indent();
 editor.insert("x = 1\n");
-
 
 function runCommand(command) {
 
@@ -35,6 +33,19 @@ function runCommand(command) {
     }
     else if(command.includes("new")) {
         commandMakeNew(command);
+    }
+    else if(command.includes("save")) {
+        commandSaveFile(command)
+    }
+}
+
+//saves a file, given the name
+function commandSaveFile(command) {
+    if(command.includes("as")) {
+        fileName = command.substring(command.indexOf("as") + 3, command.length)
+        downloadFile(fileName)
+    } else {
+        downloadFile("script")
     }
 }
 
@@ -107,7 +118,7 @@ function goToObject(command) {
         //if user mentions a checkpoint, goes to it
         for(let name in checkpointNames) {
             if(command.includes(name)) {
-                goToCheckpoint(name);
+                //goToCheckpoint(name);
             }
         }
 
