@@ -1,6 +1,8 @@
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/python");
+var session = editor.getSession();
+var document = session.getDocument();
 
 $(".run-program").click(function () {
     console.log("Test")
@@ -22,6 +24,7 @@ function startVoice() {
 }*/
 
 editor.insert("hello\nmy\nname\nis\njason\nhi");
+console.log(read(1, 5, 2, 4));
 
 interpretVoice("go to line 3");
 
@@ -50,7 +53,7 @@ function voiceGoTo(command) {
             editor.insert("ugh");
         }
 
-        lineNum = parseInt(command.subString(index, command.length - 1));
+        lineNum = parseInt(command.substring(index, command.length - 1));
 
         editor.insert("hi");
 
@@ -70,16 +73,15 @@ function voiceGoTo(command) {
 //goes to specific line
 //loc 0 = start, loc 1 = end
 function goToLine(lineNum, loc) {
-    const editor = this.ace.editor;
 
     if(loc == 0) {
-        editor.goToLine(lineNum);
+        editor.gotoLine(lineNum);
         editor.insert(toString(lineNum));
     }
     //goes to line below and then goes 
     //to the left once (to go to end of prev line)
     else if(loc == 1) {
-        editor.goToLine(lineNum + 1);
+        editor.gotoLine(lineNum + 1);
         editor.navigateLeft(1);
     }
 }
@@ -96,6 +98,5 @@ function voiceRead(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    const editor = this.ace.editor;
-    return editor.env.document.getTextRange(new Range(from_line, from_col, to_line, to_col));
+    return document;
 }
