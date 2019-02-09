@@ -7,13 +7,12 @@ var checkpointNames = [];
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
 
-editor.insert(" for ");
 
+editor.gotoLine(10);
+editor.insert("for i in range(5)\n");
+editor.indent();
+editor.insert("x = 1\n");
 
-console.log(read(1, 1, 4, 1));
-
-
-runCommand("go to next for loop");
 
 function runCommand(command) {
 
@@ -116,5 +115,6 @@ function voiceRead(command) {
 
 function read(read_range)
 {
+    console.log(read_range)
     return aceDoc.getTextRange(read_range);
 }
