@@ -1,16 +1,17 @@
 var editor = ace.edit('editor');
-var session = editor.getSession();
-var aceDoc = session.getDocument();
+editor.setTheme('ace/theme/twilight');
+editor.session.setMode('ace/mode/python');
 
-var checkpointNames = [];
+let session = editor.getSession();
+let aceDoc = session.getDocument();
+
+let checkpointNames = [];
 
 for (let i = 0; i < 20; i++) editor.insert('test ' + (i + 1) + '\n');
 
 editor.insert(' for ');
 
-console.log(read(1, 5, 2, 4));
-
-//runCommand('go to next for loop');
+//console.log(read(1, 5, 2, 4));
 
 function runCommand(command) {
     console.log('command' + command);
@@ -18,16 +19,16 @@ function runCommand(command) {
     command.toLowerCase();
 
     if (command.includes('go to')) {
-        voiceGoTo(command);
+        commandGoTo(command);
     } else if (command.includes('read')) {
-        voiceRead(command);
+        commandRead(command);
     } else if (command.includes('new')) {
-        voiceMakeNew(command);
+        commandMakeNew(command);
     }
 }
 
 //figures out where to go, given the string command
-function voiceGoTo(command) {
+function commandGoTo(command) {
     if (command.includes('line')) {
         lineNum = getLineFromCommand(command);
 
@@ -83,7 +84,7 @@ function goToObject(command) {
     }
 }
 
-function voiceRead(command) {
+function commandRead(command) {
     //TODO: this is ambiguous, user could say "read lines 5 to 7" and it would
     //just read line 5
     if (command.includes('line')) {
