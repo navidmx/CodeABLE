@@ -184,7 +184,7 @@ function commandRead(command) {
         let row = editor.getCursorPosition().row;
         let col = getLineLength(row + 1) - 1;
         let Range = ace.require('ace/range').Range;
-        read(row + 1, row + 1);
+        giveFeedback(read(row, row));
 
     } else if (command.includes("this block")) {
         //TODO: scan through, figure out where paragraph ends
@@ -204,7 +204,13 @@ function commandMake(command) {
 }
 
 function read(from_row, to_row) {
-    return aceDoc.getLines(from_row, to_row);
+    let lines = aceDoc.getLines(from_row, to_row);
+    let result = "";
+    for(let i = 0; i < lines.length; i++) {
+        lines[i] = lines[i].trim();
+        result += lines[i] + "$ ";
+    }
+    return result;
 }
 
 function makeCheckpoint(type, name, line) {
