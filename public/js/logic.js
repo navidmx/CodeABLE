@@ -69,9 +69,9 @@ function commandGoTo(command) {
             } else
                 goToLine(lineNum, 0);
         }
-    } else if (command.includes("loop") || command.includes("checkpoint")) {
-        goToCheckpoint(command);
-    } else if (command.includes("next")) {
+    } else if (command.includes("next")
+                || command.includes("loop")
+                || command.includes("checkpoint")) {
         goToObject(command);
     }
 }
@@ -80,7 +80,6 @@ function commandGoTo(command) {
 //loc 0 = start, loc 1 = end
 function goToLine(lineNum, loc) {
     if (loc == 0) {
-        editor.insert("what");
         editor.gotoLine(lineNum);
     }
     //goes to line below and then goes 
@@ -112,6 +111,14 @@ function getLineFromCommand(command) {
     return lineNum;
 }
 
+function getLineLength(lineNum) {
+    goToLine(lineNum + 1);
+    editor.navigateLeft(1);
+
+    return editor.getCursorPosition() + 1;
+}
+
+
 function goToObject(command) {
     if (command.includes("loop")) {
 
@@ -125,19 +132,32 @@ function goToObject(command) {
 
         //otherwise, goes to next for loop
         if (command.includes("for")) {
-            let line = editor.findNext(" for ").startRow;
-            let col = editor.findNext(" for ").startColumn;
+            let line = editor.findNext("for ").startRow;
+            let col = editor.findNext("for ").startColumn;
 
             editor.insert(line.toString() + "\n" + col.toString());
         } else if (command.includes("while")) {
             //TODO
         }
+    } else if (command.includes("checkpoint")) {
+        for (let name of checkpointNames) {
+            if(command.includes(name)) {
+                giveFeedback("Going to checkpoint " + name);
+                goToCheckpoint("checkpoint", name);
+            }
+        }
     }
 }
 
 function commandRead(command) {
-    if (command.includes("line")) {
-        //TODO
+    if (command.includes("this line") || command.includes("current line")) {
+        let row = editor.getCursorPosition().row;
+        let col = getLineLength(row + 1) - 1;
+
+        read(new Range(row + 1, 0, row + 1, col));
+
+    } else if (command.includes("this block")) {
+        //TODO: scan through, figure out where paragraph ends
     }
 }
 
@@ -154,6 +174,7 @@ function commandMake(command) {
 }
 
 function read(read_range) {
+    editor.insert(aceDoc.getTextRange(read_range));
     return aceDoc.getTextRange(read_range);
 }
 
@@ -164,6 +185,7 @@ function makeCheckpoint(type, name, line) {
     let comment = "#" + symbol + type + ": \"" + name + "\"";
 
     session.insert(cursorPosition, comment);
+    checkpointNames.splice(0, 0, name)
 }
 
 function goToCheckpoint(type, name) {
@@ -174,9 +196,10 @@ function goToCheckpoint(type, name) {
 
     for (let i = 0; i < allLines.length; i++) {
         if (allLines[i].includes(comment)) {
-            goToLine(i + 2);
+            goToLine(i + 2, 0);
             giveFeedback("Now at " + type + " " + name);
+            return;
         }
     }
-    giveFeedback("That " + type + " does not exist")
+    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist")
 }
