@@ -17,7 +17,15 @@ editor.indent();
 editor.insert("x = 1\n");
 
 function giveFeedback(text) {
+    feedbackDisplay(text);
     return text;
+}
+
+function checkError(error) {
+    if (error.includes("on line")){
+        error = "Error " + error.substr(error.indexOf("on line"), error.length)
+    }
+    return error;
 }
 
 function runCommand(command) {
