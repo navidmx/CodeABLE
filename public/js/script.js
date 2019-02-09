@@ -4,8 +4,6 @@ editor.session.setMode("ace/mode/python");
 var session = editor.getSession();
 var aceDoc = session.getDocument();
 
-promptOpen = false;
-
 $(".run-program").click(function () {
     runit();
 })
@@ -22,11 +20,18 @@ $(document).keydown(function (e) {
     }
 });
 
+function commandEntered(e) {
+    if (e.keyCode == 13) {
+        runCommand($("#scriptBox").val());
+        return false;
+    }
+}
+
 function startVoice() {
-    
+    // Start Azure's voice detection, enter in runCommand(voice)
 }
 
 
 function endVoice() {
-    
+    // Halt voice input
 }

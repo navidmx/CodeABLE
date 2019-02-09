@@ -27,10 +27,14 @@ function runit() {
     });
     myPromise.then(
         function(mod) {
+            pythonSuccess();
             console.log('success');
         },
         function(err) {
+            console.log('reject');
             console.log(err.toString());
+            pythonError();
+            mypre.innerHTML = err.toString();
         }
     );
 }
