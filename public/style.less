@@ -1,8 +1,17 @@
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
     color: white;
     background: black !important;
+}
+
+pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 .nopadding {
@@ -34,6 +43,7 @@ html, body {
             color: white;
             background-color: #131313;
             transition: border-color .5s, color .5s, opacity .5s;
+
             &:focus {
                 outline: 0;
                 border-color: #2e9dc6;

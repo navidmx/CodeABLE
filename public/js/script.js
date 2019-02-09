@@ -21,11 +21,17 @@ function downloadFile(name) {
     saveAs(file);
 }
 
+function openFile() {
+
+}
+
 function commandEntered(e) {
     if (e.keyCode == 13) {
         $(".form-control").blur();
         editor.focus();
-        runCommand($("#scriptBox").val());
+        if ($("#scriptBox").val() != undefined) {
+            runCommand($("#scriptBox").val());
+        }
         $("#scriptBox")
             .css("color", "#2e9dc6")
             .delay(300)

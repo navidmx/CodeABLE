@@ -47,7 +47,10 @@ function runCommand(command) {
 //saves a file, given the name
 function commandSaveFile(command) {
     if(command.includes("as")) {
-        fileName = command.substring(command.indexOf("as") + 3, command.length)
+        fileName = command.substring(command.indexOf("as") + 3, command.length);
+        if(fileName.includes(".py")) {
+            fileName = fileName.split(".py")[0]
+        }
         downloadFile(fileName)
     } else {
         downloadFile("script")
@@ -162,5 +165,17 @@ function makeCheckpoint(type, name, line) {
 }
 
 function goToCheckpoint(type, name) {
+    let allLines = [];
+    allLines = aceDoc.getAllLines().slice();
+    let symbol = " ~ ";
+    let comment = "#" + symbol + type + ": \"" + name + "\"";
 
+    for(let i = 0; i < allLines.length; i++){
+        if(allLines[i].includes(comment))
+        {
+            goToLine(i + 2);
+            giveFeedback("Now at " + type + " " + name);
+        }
+    }
+    giveFeedback("That " + type + " does not exist")
 }
