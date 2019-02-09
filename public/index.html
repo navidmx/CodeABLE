@@ -37,21 +37,14 @@
                             aria-label="Command"
                         />
                     </div>
-                </form>
-            </nav>
-            <div class="row">
-                <div class="col-md-7 nopadding">
-                    <div id="editor"></div>
-                </div>
-                <div class="col-md-5 nopadding">
-                    <button class="run-program">
-                        <i class="fas fa-play"></i>
-                    </button>
-                    <pre id="output"></pre>
+                    <input id="scriptBox" class="form-control" type="text" onkeypress="return commandEntered(event)" placeholder="Press ESC to enter a command..." aria-label="Command" />
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+    <div id="feedbackBar"></div>
+</body>
+
 
     <footer>
         <!-- CDN Libraries -->

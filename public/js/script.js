@@ -22,7 +22,12 @@ function downloadFile(name) {
 }
 
 function openFile() {
+    
+}
 
+function feedbackDisplay(feedback) {
+    $("#feedbackBar").text(feedback);
+    $("#feedbackBar").fadeIn(500).delay(feedback.length * 200).fadeOut(500);
 }
 
 function commandDisplay(command) {
@@ -58,8 +63,12 @@ function commandEntered(e) {
 
 function pythonSuccess() {
     $("#output").css("color", "white")
+    $("#feedbackBar").css("color", "white")
+    giveFeedback("Program ran successfully.")
 }
 
-function pythonError() {
+function pythonError(error) {
     $("#output").css("color", "red")
+    $("#feedbackBar").css("color", "red")
+    giveFeedback(checkError(error))
 }

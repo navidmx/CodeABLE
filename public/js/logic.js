@@ -2,25 +2,72 @@ var editor = ace.edit("editor");
 
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/python");
+editor.getSession().setUseWrapMode(true);
 
 let session = editor.getSession();
 let aceDoc = session.getDocument();
 
 let checkpointNames = [];
 
-for (let i = 0; i < 20; i++)
-    editor.insert("test " + (i + 1) + "\n");
+editor.insert(`x = 5
+y = 2
 
-editor.gotoLine(10);
-editor.insert("for i in range(5)\n");
-editor.indent();
-editor.insert("x = 1\n");
+# ~ checkpoint: "add5"
+for i in range(5):
+    y += 1
+
+def calculateMeaning(n1, n2):
+    n1 *= 8
+    n2 %= 5
+    meaning = n1 + n2
+    return meaning
+
+whatIsLife = str(calculateMeaning(x, y))
+print "The meaning of life is " + whatIsLife
+`);
 
 function giveFeedback(text) {
+    feedbackDisplay(text);
     return text;
 }
 
+function checkError(error) {
+    if (error.includes("on line")){
+        error = "Error " + error.substr(error.indexOf("on line"), error.length)
+    }
+    return error;
+}
+
+//adds checkpoints in a loaded file into the system
+function loadCheckpoints() {
+    let allLines = [];
+    allLines = aceDoc.getAllLines().slice();
+    let symbol = " ~ ";
+
+    for (let line of allLines) {
+        if (line.includes("#" + symbol)) {
+            lineSplit = line.split(" ");
+
+            for (let i in lineSplit) {
+                if (lineSplit[i].includes("~")) {
+                    nameIndex = i + 2;
+
+                    name = lineSplit[nameIndex];
+                    name = name.substring(1, name.length - 1);
+
+                    checkpointNames.splice(0, 0, lineSplit[nameIndex]);
+                }
+            }
+        }
+    }
+}
+
 function runCommand(command) {
+
+    for(let i of checkpointNames) {
+        editor.insert(i);
+    }
+
     if (command.includes("run")) {
         runit();
     } else if (command.includes("go to")) {
@@ -60,9 +107,9 @@ function commandGoTo(command) {
             } else
                 goToLine(lineNum, 0);
         }
-    } else if (command.includes("loop") || command.includes("checkpoint")) {
-        goToCheckpoint(command);
-    } else if (command.includes("next")) {
+    } else if (command.includes("next")
+                || command.includes("loop")
+                || command.includes("checkpoint")) {
         goToObject(command);
     }
 }
@@ -71,7 +118,6 @@ function commandGoTo(command) {
 //loc 0 = start, loc 1 = end
 function goToLine(lineNum, loc) {
     if (loc == 0) {
-        editor.insert("what");
         editor.gotoLine(lineNum);
     }
     //goes to line below and then goes 
@@ -103,6 +149,14 @@ function getLineFromCommand(command) {
     return lineNum;
 }
 
+function getLineLength(lineNum) {
+    goToLine(lineNum + 1);
+    editor.navigateLeft(1);
+
+    return editor.getCursorPosition() + 1;
+}
+
+
 function goToObject(command) {
     if (command.includes("loop")) {
 
@@ -116,19 +170,32 @@ function goToObject(command) {
 
         //otherwise, goes to next for loop
         if (command.includes("for")) {
-            let line = editor.findNext(" for ").startRow;
-            let col = editor.findNext(" for ").startColumn;
+            let line = editor.findNext("for ").startRow;
+            let col = editor.findNext("for ").startColumn;
 
             editor.insert(line.toString() + "\n" + col.toString());
         } else if (command.includes("while")) {
             //TODO
         }
+    } else if (command.includes("checkpoint")) {
+        for (let name of checkpointNames) {
+            if(command.includes(name)) {
+                giveFeedback("Going to checkpoint " + name);
+                goToCheckpoint("checkpoint", name);
+            }
+        }
     }
 }
 
 function commandRead(command) {
-    if (command.includes("line")) {
-        //TODO
+    if (command.includes("this line") || command.includes("current line")) {
+        let row = editor.getCursorPosition().row;
+        let col = getLineLength(row + 1) - 1;
+        let Range = ace.require('ace/range').Range;
+        giveFeedback(read(row, row));
+
+    } else if (command.includes("this block")) {
+        //TODO: scan through, figure out where paragraph ends
     }
 }
 
@@ -144,8 +211,14 @@ function commandMake(command) {
     }
 }
 
-function read(read_range) {
-    return aceDoc.getTextRange(read_range);
+function read(from_row, to_row) {
+    let lines = aceDoc.getLines(from_row, to_row);
+    let result = "";
+    for(let i = 0; i < lines.length; i++) {
+        lines[i] = lines[i].trim();
+        result += lines[i] + "$ ";
+    }
+    return result;
 }
 
 function makeCheckpoint(type, name, line) {
@@ -155,6 +228,7 @@ function makeCheckpoint(type, name, line) {
     let comment = "#" + symbol + type + ": \"" + name + "\"";
 
     session.insert(cursorPosition, comment);
+    checkpointNames.splice(0, 0, name)
 }
 
 function goToCheckpoint(type, name) {
@@ -162,12 +236,14 @@ function goToCheckpoint(type, name) {
     allLines = aceDoc.getAllLines().slice();
     let symbol = " ~ ";
     let comment = "#" + symbol + type + ": \"" + name + "\"";
+    
 
     for (let i = 0; i < allLines.length; i++) {
         if (allLines[i].includes(comment)) {
-            goToLine(i + 2);
+            goToLine(i + 2, 0);
             giveFeedback("Now at " + type + " " + name);
+            return;
         }
     }
-    giveFeedback("That " + type + " does not exist")
+    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist");
 }
