@@ -10,7 +10,11 @@ let checkpointNames = [];
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
 
-editor.insert(" for ");
+
+editor.gotoLine(10);
+editor.insert("for i in range(5)\n");
+editor.indent();
+editor.insert("x = 1\n");
 
 
 //console.log(read(1, 5, 2, 4));
