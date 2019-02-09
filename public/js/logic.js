@@ -199,7 +199,7 @@ function commandRead(command) {
         goToLine(row + 1);
         let col = getLineLength(row + 1) - 1;
         let Range = ace.require('ace/range').Range;
-        giveFeedback(read(row + 1, row + 1));
+        giveFeedback(read(row, row));
     } else if (command.includes("this block")) {
         //TODO: scan through, figure out where paragraph ends
     }
