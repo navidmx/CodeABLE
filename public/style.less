@@ -1,17 +1,64 @@
+body {
+    background-color: black;
+}
+
+.col-md-8, .col-md-4 {
+    padding: 0;
+}
+
+.navbar {
+    height: 70px;
+    background-color: #2a2a2a;
+
+    .navbar-brand {
+        color: #2e9dc6;
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .input-group {
+        margin-left: 20px;
+        width: 100%;
+        .input-group-text {
+            background-color: #272727;
+            border-color: #ccc;
+        }
+        .form-control {
+            font-size: 24px;
+            width: 40vw;
+            background-color: #131313;
+            transition: border-color .5s;
+            &:focus {
+                outline: 0;
+                border-color: #2e9dc6;
+            }
+        }
+        button {
+            background-color: #131313;
+            color: #2e9dc6;
+        }
+    }
+}
+
 #editor {
-    position: absolute;
     font-size: 24px;
-    height: 100%;
-    width: 60%;
+    min-height: calc(100vh - 70px);
+}
+
+.run-program {
+    position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
+    margin: 10px 20px;
+    padding: 10px 20px;
+    background-color: #45454575;
+    color: green;
+    border-radius: 10px;
 }
 
 #output {
-    position: absolute;
+    color: white;
+    padding: 20px;
     font-size: 24px;
-    height: 100%;
-    width: 40%;
-    top: 0;
-    right: 0;
+    height: calc(100vh - 70px);
 }
