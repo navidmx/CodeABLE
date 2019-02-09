@@ -42,7 +42,10 @@ function runCommand(command) {
 //saves a file, given the name
 function commandSaveFile(command) {
     if(command.includes("as")) {
-        fileName = command.substring(command.indexOf("as") + 3, command.length)
+        fileName = command.substring(command.indexOf("as") + 3, command.length);
+        if(fileName.includes(".py")) {
+            fileName = fileName.split(".py")[0]
+        }
         downloadFile(fileName)
     } else {
         downloadFile("script")
