@@ -16,27 +16,32 @@ editor.insert("for i in range(5)\n");
 editor.indent();
 editor.insert("x = 1\n");
 
+
+function giveFeedback(text) {
+    return text;
+}
+
+
 function runCommand(command) {
-
     command.trim();
-    command.toLowerCase();
-
-    if(command.includes("run"))
-    {
-        runit();
-    }
-    else if(command.includes("go to")) {
-        commandGoTo(command);
-    }
-    else if(command.includes("read")) {
-        commandRead(command);
-    }
-    else if(command.includes("new")) {
-        commandMakeNew(command);
-    }
-    else if(command.includes("save")) {
-        commandSaveFile(command)
-    }
+        command.toLowerCase();
+    
+        if(command.includes("run"))
+        {
+            runit();
+        }
+        else if(command.includes("go to")) {
+            commandGoTo(command);
+        }
+        else if(command.includes("read")) {
+            commandRead(command);
+        }
+        else if(command.includes("new")) {
+            commandMakeNew(command);
+        }
+        else if(command.includes("save")) {
+            commandSaveFile(command)
+        }
 }
 
 //saves a file, given the name
@@ -61,7 +66,8 @@ function commandGoTo(command) {
                 goToLine(lineNum, 1);
             }
 
-            goToLine(lineNum, 0);
+            else
+                goToLine(lineNum, 0);
         }
     }
     else if(command.includes("loop") || command.includes("checkpoint")) {
@@ -76,11 +82,14 @@ function commandGoTo(command) {
 //loc 0 = start, loc 1 = end
 function goToLine(lineNum, loc) {
     if(loc == 0) {
+        editor.insert("what");
         editor.gotoLine(lineNum);
     }
     //goes to line below and then goes 
     //to the left once (to go to end of prev line)
     else if(loc == 1) {
+        let lastLine = editor.session.getLength();
+
         editor.gotoLine(lineNum + 1);
         editor.navigateLeft(1);
     }
@@ -99,7 +108,7 @@ function getLineFromCommand(command) {
     let lastLine = editor.session.getLength();
 
     if(lineNum > lastLine) {
-        //TODO: say "line __ does not exist. Last line is __."
+        giveFeedback("Line " + lineNum.toString() + " does not exist. Last line is " + lastLine.toString());
         return -1;
     }
 
@@ -113,11 +122,12 @@ function goToObject(command) {
         //if user mentions a checkpoint, goes to it
         for(let name in checkpointNames) {
             if(command.includes(name)) {
-                //goToCheckpoint(name);
+                giveFeedback("Going to loop checkpoint " + name);
+                goToCheckpoint("loop", name);
             }
         }
 
-        //otherwise, goes to next loop
+        //otherwise, goes to next for loop
         if(command.includes("for")) {
             let line = editor.findNext(" for ").startRow;
             let col = editor.findNext(" for ").startColumn;
