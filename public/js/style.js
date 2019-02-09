@@ -1,0 +1,2 @@
+function pythonSuccess() {}
+function pythonError() {}
