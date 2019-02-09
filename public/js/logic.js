@@ -4,9 +4,9 @@ editor.insert("hello\nmy\nname\nis\njason\nhi");
 console.log(read(1, 5, 2, 4));
 
 
-interpretVoice("go to next for loop");
+runCommand("go to next for loop");
 
-function interpretVoice(command) {
+function runCommand(command) {
 
     command.trim();
     command.toLowerCase();
