@@ -28,12 +28,9 @@ function runit() {
     myPromise.then(
         function(mod) {
             pythonSuccess();
-            console.log('success');
         },
         function(err) {
-            console.log('reject');
-            console.log(err.toString());
-            pythonError();
+            pythonError(err.toString());
             mypre.innerHTML = err.toString();
         }
     );
