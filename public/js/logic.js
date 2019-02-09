@@ -120,5 +120,9 @@ function read(read_range)
 
 function makeCheckpoint(type, name, line) {
     goToLine(line, 1);
-    
+    let cursorPosition = editor.getCursorPosition();
+    let symbol
+
+    let comment  
+    session.insert(cursorPosition,"#fff");
 }
