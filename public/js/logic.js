@@ -9,13 +9,22 @@ let aceDoc = session.getDocument();
 
 let checkpointNames = [];
 
-for (let i = 0; i < 20; i++)
-    editor.insert("test " + (i + 1) + "\n");
+editor.insert(`x = 5
+y = 2
 
-editor.gotoLine(10);
-editor.insert("for i in range(5)\n");
-editor.indent();
-editor.insert("x = 1\n");
+# ~ checkpoint: "add5"
+for i in range(5):
+    y += 1
+
+def calculateMeaning(n1, n2):
+    n1 *= 8
+    n2 %= 5
+    meaning = n1 + n2
+    return meaning
+
+whatIsLife = str(calculateMeaning(x, y))
+print "The meaning of life is " + whatIsLife
+`);
 
 function giveFeedback(text) {
     feedbackDisplay(text);
