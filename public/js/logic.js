@@ -1,4 +1,7 @@
-let editor = ace.edit("editor");
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/twilight");
+editor.session.setMode("ace/mode/python");
+
 let session = editor.getSession();
 let aceDoc = session.getDocument();
 
