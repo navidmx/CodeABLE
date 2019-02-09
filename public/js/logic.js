@@ -1,11 +1,15 @@
 var editor = ace.edit("editor");
-
-var checkpointNames = [];
 var session = editor.getSession();
 var aceDoc = session.getDocument();
 
+var checkpointNames = [];
 
-editor.insert("hello\nmy\nname\nis\njason\nhi");
+for(let i = 0; i < 20; i++)
+    editor.insert("test " + i + "\n");
+
+editor.insert(" for ");
+
+
 console.log(read(1, 5, 2, 4));
 
 
@@ -91,13 +95,13 @@ function goToObject(command) {
 
         //otherwise, goes to next loop
         if(command.includes("for")) {
-            let line = editor.findNext(" for ").line;
-            let col = editor.findNext(" for ").col;
+            let line = editor.findNext(" for ").startRow;
+            let col = editor.findNext(" for ").startColumn;
 
             editor.insert(line.toString() + "\n" + col.toString());
         }
         else if(command.includes("while")) {
-            let line = edit
+            //TODO
         }
     }
 }
