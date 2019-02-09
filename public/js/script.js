@@ -25,26 +25,33 @@ function openFile() {
 
 }
 
+function commandDisplay(command) {
+    command = command.trim();
+    command = command.toLowerCase();
+    $("#scriptBox").val(command);
+    $("#scriptBox")
+        .css("color", "#2e9dc6")
+        .delay(300)
+        .queue(function (next) {
+            $(this).css("color", "rgba(255, 255, 255, 0)");
+            next();
+        })
+        .delay(1000)
+        .queue(function (next) {
+            $(this).val("");
+            $(this).css("color", "white");
+            next();
+    })
+    runCommand(command)
+    editor.focus();
+}
+
 function commandEntered(e) {
     if (e.keyCode == 13) {
         $(".form-control").blur();
-        editor.focus();
         if ($("#scriptBox").val() != undefined) {
-            runCommand($("#scriptBox").val());
+            commandDisplay($("#scriptBox").val());
         }
-        $("#scriptBox")
-            .css("color", "#2e9dc6")
-            .delay(300)
-            .queue(function (next) {
-                $(this).css("color", "rgba(255, 255, 255, 0)");
-                next();
-            })
-            .delay(1000)
-            .queue(function (next) {
-                $(this).val("");
-                $(this).css("color", "white");
-                next();
-            })
         return false;
     }
 }

@@ -23,25 +23,22 @@ function giveFeedback(text) {
 
 
 function runCommand(command) {
-    command.trim();
-        command.toLowerCase();
-    
-        if(command.includes("run"))
-        {
-            runit();
-        }
-        else if(command.includes("go to")) {
-            commandGoTo(command);
-        }
-        else if(command.includes("read")) {
-            commandRead(command);
-        }
-        else if(command.includes("new")) {
-            commandMakeNew(command);
-        }
-        else if(command.includes("save")) {
-            commandSaveFile(command)
-        }
+    if(command.includes("run"))
+    {
+        runit();
+    }
+    else if(command.includes("go to")) {
+        commandGoTo(command);
+    }
+    else if(command.includes("read")) {
+        commandRead(command);
+    }
+    else if(command.includes("new")) {
+        commandMakeNew(command);
+    }
+    else if(command.includes("save")) {
+        commandSaveFile(command)
+    }
 }
 
 //saves a file, given the name
