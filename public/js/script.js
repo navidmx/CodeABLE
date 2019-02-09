@@ -24,10 +24,10 @@ function startVoice() {
 }*/
 
 var checkpointNames = [];
+
 editor.insert("hello\nmy\nname\nis\njason\nhi");
 console.log(read(1, 5, 2, 4));
 
-editor.insert("hello\nmy\nname\nis\njason\nhi\nbruh for \nhi");
 
 interpretVoice("go to next for loop");
 
@@ -115,6 +115,9 @@ function goToObject(command) {
             let col = editor.findNext(" for ").col;
 
             editor.insert(line.toString() + "\n" + col.toString());
+        }
+        else if(command.includes("while")) {
+            let line = edit
         }
     }
 }
