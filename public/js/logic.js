@@ -141,6 +141,10 @@ function makeCheckpoint(type, name, line) {
     let cursorPosition = editor.getCursorPosition();
     let symbol = " ~ ";
     let comment = "#" + symbol + type + ": \"" + name + "\""; 
-    
+
     session.insert(cursorPosition, comment);
+}
+
+function goToCheckpoint(type, name) {
+
 }
