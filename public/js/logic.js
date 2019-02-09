@@ -9,13 +9,22 @@ let aceDoc = session.getDocument();
 
 let checkpointNames = [];
 
-for (let i = 0; i < 20; i++)
-    editor.insert("test " + (i + 1) + "\n");
+editor.insert(`x = 5
+y = 2
 
-editor.gotoLine(10);
-editor.insert("for i in range(5)\n");
-editor.indent();
-editor.insert("x = 1\n");
+# ~ checkpoint: "add5"
+for i in range(5):
+    y += 1
+
+def calculateMeaning(n1, n2):
+    n1 *= 8
+    n2 %= 5
+    meaning = n1 + n2
+    return meaning
+
+whatIsLife = str(calculateMeaning(x, y))
+print "The meaning of life is " + whatIsLife
+`);
 
 function giveFeedback(text) {
     feedbackDisplay(text);
@@ -27,6 +36,27 @@ function checkError(error) {
         error = "Error " + error.substr(error.indexOf("on line"), error.length)
     }
     return error;
+}
+
+//adds checkpoints in a loaded file into the system
+function loadCheckpoints() {
+    let allLines = [];
+    allLines = aceDoc.getAllLines().slice();
+    let symbol = " ~ ";
+
+    for (let line of allLines) {
+        if (line.includes("# " + symbol)) {
+            lineSplit = line.split(" ");
+
+            for (let i in lineSplit) {
+                if (lineSplit[i].includes("~")) {
+                    nameIndex = i + 2;
+
+                    checkpointNames.splice(0, 0, lineSplit[nameIndex]);
+                }
+            }
+        }
+    }
 }
 
 function runCommand(command) {
@@ -143,7 +173,7 @@ function goToObject(command) {
         for (let name of checkpointNames) {
             if(command.includes(name)) {
                 giveFeedback("Going to checkpoint " + name);
-                goToCheckpoint("checkpoint", name);
+                
             }
         }
     }
@@ -192,6 +222,7 @@ function goToCheckpoint(type, name) {
     allLines = aceDoc.getAllLines().slice();
     let symbol = " ~ ";
     let comment = "#" + symbol + type + ": \"" + name + "\"";
+    
 
     for (let i = 0; i < allLines.length; i++) {
         if (allLines[i].includes(comment)) {
@@ -200,5 +231,5 @@ function goToCheckpoint(type, name) {
             return;
         }
     }
-    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist")
+    giveFeedback("Checkpoint \'" + name + "\' of type \'"+ type + "\' does not exist");
 }
