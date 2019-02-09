@@ -21,6 +21,10 @@ function downloadFile(name) {
     saveAs(file);
 }
 
+function openFile() {
+    
+}
+
 function commandEntered(e) {
     if (e.keyCode == 13) {
         $(".form-control").blur();
