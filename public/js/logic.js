@@ -1,11 +1,8 @@
 var editor = ace.edit("editor");
-editor.setTheme("ace/theme/twilight");
-editor.session.setMode("ace/mode/python");
+var session = editor.getSession();
+var aceDoc = session.getDocument();
 
-let session = editor.getSession();
-let aceDoc = session.getDocument();
-
-let checkpointNames = [];
+var checkpointNames = [];
 
 for(let i = 0; i < 20; i++)
     editor.insert("test " + (i + 1) + "\n");
@@ -17,8 +14,7 @@ editor.indent();
 editor.insert("x = 1\n");
 
 
-//console.log(read(1, 5, 2, 4));
-
+runCommand("go to next for loop");
 
 function runCommand(command) {
 
@@ -26,23 +22,33 @@ function runCommand(command) {
     command.toLowerCase();
 
     if(command.includes("go to")) {
-        commandGoTo(command);
+        voiceGoTo(command);
     }
     else if(command.includes("read")) {
-        commandRead(command);
+        voiceRead(command);
     }
     else if(command.includes("new")) {
-        commandMakeNew(command);
+        voiceMakeNew(command);
     }
 }
 
 //figures out where to go, given the string command
-function commandGoTo(command) {
+function voiceGoTo(command) {
     if(command.includes("line")) {
 
-        lineNum = getLineFromCommand(command);
+        let index = 0;
 
-        if(lineNum >= 0)
+        if(command.length > command.indexOf("line") + 4) {
+            index = command.indexOf("line") + 5;
+        }
+
+        let lineNum = parseInt(command.substring(index, command.length));
+
+        let lastLine = editor.session.getLength();
+
+        if(lineNum > lastLine) {
+            //TODO: say "line __ does not exist. Last line is __."
+        }
 
         if(command.includes("end")) {
             goToLine(lineNum, 1);
@@ -102,41 +108,15 @@ function goToObject(command) {
 }
 
 
-function commandRead(command) {
-
-    //TODO: this is ambiguous, user could say "read lines 5 to 7" and it would
-    //just read line 5
+function voiceRead(command) {
     if(command.includes("line")) {
-        
-        let lineNum = getLineFromCommand(command);
-
-
+        //TODO
     }
 }
 
 
-function getLineFromCommand(command) {
-    let index = 0;
-
-    if(command.length > command.indexOf("line") + 4) {
-        index = command.indexOf("line") + 5;
-    }
-
-    let lineNum = parseInt(command.substring(index, command.length));
-
-    let lastLine = editor.session.getLength();
-
-    if(lineNum > lastLine) {
-        //TODO: say "line __ does not exist. Last line is __."
-        return -1;
-    }
-
-    return lineNum;
-}
-
-
-function read(from_line, from_col, to_line, to_col)
+function read(read_range)
 {
-   // const read_range = new Range(from_line, from_col, to_line, to_col)
-   // return aceDoc.getTextRange(read_range);
+    console.log(read_range)
+    return aceDoc.getTextRange(read_range);
 }
