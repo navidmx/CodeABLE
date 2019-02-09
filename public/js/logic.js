@@ -14,8 +14,6 @@ editor.indent();
 editor.insert("x = 1\n");
 
 
-runCommand("go to next for loop");
-
 function runCommand(command) {
 
     command.trim();
