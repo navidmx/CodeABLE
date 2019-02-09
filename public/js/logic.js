@@ -107,6 +107,13 @@ function goToObject(command) {
 }
 
 
+function voiceRead(command) {
+    if(command.includes("line")) {
+        //TODO
+    }
+}
+
+
 function read(from_line, from_col, to_line, to_col)
 {
     return aceDoc.getTextRange(from_line, from_col, to_line, to_col);
