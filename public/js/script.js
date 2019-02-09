@@ -2,7 +2,7 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/python");
 var session = editor.getSession();
-var document = session.getDocument();
+var aceDoc = session.getDocument();
 
 $(".run-program").click(function () {
     console.log("Test")
@@ -122,5 +122,5 @@ function goToObject(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    return document;
+    return aceDoc;
 }
