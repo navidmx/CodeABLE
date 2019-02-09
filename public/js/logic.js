@@ -24,24 +24,24 @@ function giveFeedback(text) {
 
 function runCommand(command) {
     command.trim();
-        command.toLowerCase();
-    
-        if(command.includes("run"))
-        {
-            runit();
-        }
-        else if(command.includes("go to")) {
-            commandGoTo(command);
-        }
-        else if(command.includes("read")) {
-            commandRead(command);
-        }
-        else if(command.includes("new")) {
-            commandMakeNew(command);
-        }
-        else if(command.includes("save")) {
-            commandSaveFile(command)
-        }
+    command.toLowerCase();
+
+    if(command.includes("run"))
+    {
+        runit();
+    }
+    else if(command.includes("go to")) {
+        commandGoTo(command);
+    }
+    else if(command.includes("read")) {
+        commandRead(command);
+    }
+    else if(command.includes("new") || command.includes("make")) {
+        commandMake(command);
+    }
+    else if(command.includes("save")) {
+        commandSaveFile(command)
+    }
 }
 
 //saves a file, given the name
@@ -147,6 +147,18 @@ function goToObject(command) {
 function commandRead(command) {
     if(command.includes("line")) {
         //TODO
+    }
+}
+
+function commandMake(command) {
+    if(command.includes("checkpoint")) {
+        let index = command.indexOf("checkpoint");
+        if(command.length > index + 10) {
+
+            let line = editor.getCursorPosition().row + 1;
+
+            makeCheckpoint("checkpoint", command.substring(index + 11), line);
+        }
     }
 }
 
