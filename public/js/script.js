@@ -14,6 +14,13 @@ $(document).keydown(function (e) {
     }
 });
 
+function downloadFile(name) {
+    var file = new File([editor.getValue()], name + ".py", {
+        type: "text/plain;charset=utf-8"
+    });
+    saveAs(file);
+}
+
 function commandEntered(e) {
     if (e.keyCode == 13) {
         $(".form-control").blur();
