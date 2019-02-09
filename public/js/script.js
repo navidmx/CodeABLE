@@ -21,16 +21,19 @@ function startVoice() {
     
 }*/
 
-editor.insert("hello\nmy\nname\nis\njason\nhi");
+var checkpointNames = [];
 
-interpretVoice("go to line 3");
+editor.insert("hello\nmy\nname\nis\njason\nhi\nbruh for \nhi");
+
+interpretVoice("go to next for loop");
 
 function interpretVoice(command) {
 
-    editor.insert("suh");
+    command.trim();
+    command.toLowerCase();
+
     if(command.includes("go to")) {
         voiceGoTo(command);
-        editor.insert("dude");
     }
     else if(command.includes("read")) {
         voiceRead(command);
@@ -44,25 +47,30 @@ function interpretVoice(command) {
 function voiceGoTo(command) {
     if(command.includes("line")) {
 
-        editor.insert("my guy");
+        let index = 0;
+
         if(command.length > command.indexOf("line") + 4) {
             index = command.indexOf("line") + 5;
-            editor.insert("ugh");
         }
 
-        lineNum = parseInt(command.subString(index, command.length - 1));
+        let lineNum = parseInt(command.substring(index, command.length));
 
-        editor.insert("hi");
+        let lastLine = editor.session.getLength();
 
-        if(command.includes("end"))
+        if(lineNum > lastLine) {
+            //TODO: say "line __ does not exist. Last line is __."
+        }
+
+        if(command.includes("end")) {
             goToLine(lineNum, 1);
+        }
 
         goToLine(lineNum, 0);
     }
-    if(command.includes("loop")) {
+    else if(command.includes("loop") || command.includes("checkpoint")) {
         goToCheckpoint(command);
     }
-    if(command.includes("next")) {
+    else if(command.includes("next")) {
         goToObject(command);
     }
 }
@@ -70,16 +78,13 @@ function voiceGoTo(command) {
 //goes to specific line
 //loc 0 = start, loc 1 = end
 function goToLine(lineNum, loc) {
-    const editor = this.ace.editor;
-
     if(loc == 0) {
-        editor.goToLine(lineNum);
-        editor.insert(toString(lineNum));
+        editor.gotoLine(lineNum);
     }
     //goes to line below and then goes 
     //to the left once (to go to end of prev line)
     else if(loc == 1) {
-        editor.goToLine(lineNum + 1);
+        editor.gotoLine(lineNum + 1);
         editor.navigateLeft(1);
     }
 }
@@ -90,9 +95,26 @@ function goToCheckpoint(command) {
 }
 
 
-function voiceRead(command) {
-    //TODO
+function goToObject(command) {
+    if(command.includes("loop")) {
+
+        //if user mentions a checkpoint, goes to it
+        for(let name in checkpointNames) {
+            if(command.includes(name)) {
+                goToCheckpoint(name);
+            }
+        }
+
+        //otherwise, goes to next loop
+        if(command.includes("for")) {
+            let line = editor.findNext(" for ").line;
+            let col = editor.findNext(" for ").col;
+
+            editor.insert(line.toString() + "\n" + col.toString());
+        }
+    }
 }
+
 
 function read(from_line, from_col, to_line, to_col)
 {
