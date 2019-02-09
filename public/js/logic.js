@@ -118,7 +118,7 @@ function goToObject(command) {
         //if user mentions a checkpoint, goes to it
         for(let name in checkpointNames) {
             if(command.includes(name)) {
-                goToCheckpoint(name);
+                //goToCheckpoint(name);
             }
         }
 
