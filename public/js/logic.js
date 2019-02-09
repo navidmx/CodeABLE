@@ -132,5 +132,6 @@ function getLineFromCommand(command) {
 
 function read(from_line, from_col, to_line, to_col)
 {
-    return aceDoc.getTextRange(from_line, from_col, to_line, to_col);
+   // const read_range = new Range(from_line, from_col, to_line, to_col)
+   // return aceDoc.getTextRange(read_range);
 }
