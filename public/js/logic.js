@@ -10,7 +10,7 @@ for(let i = 0; i < 20; i++)
 editor.insert(" for ");
 
 
-console.log(read(1, 5, 2, 4));
+//console.log(read(1, 5, 2, 4));
 
 
 runCommand("go to next for loop");
@@ -105,7 +105,7 @@ function voiceRead(command) {
         
         let lineNum = getLineFromCommand(command);
 
-        
+
     }
 }
 
